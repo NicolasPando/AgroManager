@@ -27,4 +27,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/deploy-pim4:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/deppf:latest
