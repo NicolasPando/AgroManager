@@ -9,7 +9,8 @@ const algo = 12
 const config = {
     type: 'postgres',
     database: process.env.DB_database,
-    host: 'postgresdb',
+    // host: 'postgresdb',
+    host:process.env.DB_host,
     port: parseInt(process.env.DB_port, 10),
     username: process.env.DB_username,
     password: process.env.DB_password,
