@@ -20,11 +20,11 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Verify package.json presence
         run: |
-          ls -la ./
+          ls -la ./proyecto-pf
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./Dockerfile
+          context: ./proyecto-pf
+          file: ./proyecto-pf/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/deppf:latest
