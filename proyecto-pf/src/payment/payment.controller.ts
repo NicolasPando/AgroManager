@@ -21,7 +21,7 @@ export class PaymentController {
                 start_date: new Date().toISOString(),
                 end_date: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString()
             },
-            back_url: `https://tu-dominio-publico.com/users/premium/monthly/${id}`,
+            back_url: `https://deppf.onrender.com/users/premium/monthly/${id}`,
             payer_email: "test_user_123456@testuser.com"
         };
 
