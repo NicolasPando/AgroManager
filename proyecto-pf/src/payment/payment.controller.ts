@@ -21,7 +21,8 @@ export class PaymentController {
                 start_date: new Date().toISOString(),
                 end_date: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString()
             },
-            back_url: `https://deppf.onrender.com/users/premium/monthly/${id}`
+            back_url: `https://deppf.onrender.com/users/premium/monthly/${id}`,
+            payer_email: "carinadcundins@gmail.com"
         };
 
         const preapproval = new PreApproval(client);
