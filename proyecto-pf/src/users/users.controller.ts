@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Put, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Put, UseGuards, Query, ParseIntPipe, BadRequestException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -7,34 +7,67 @@ import { AuthGuard } from 'src/auth/guards/auth.guards';
 import { RolesDecorator } from 'src/auth/guards/neededroles.decorator';
 import { roleGuard } from 'src/auth/guards/roles.guard';
 import { RolesEnum } from './entities/roles.entity';
+import { User } from './entities/user.entity';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { changePasswordDecorator, deleteUserDecorator, getUserByIdDecoractor, getUserDecorator, updateUserDecorator } from './user.decorators';
+import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
+import { query } from 'express';
 
+
+@ApiTags("users")
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get("uwu")
-  @RolesDecorator(RolesEnum.ADMIN)
-  @UseGuards(AuthGuard, roleGuard)
-  pruebaRancia() {
-    return "uwu"
-  }
+  
 
-  @Get()
+  @Get("getall")
   getUsers() {
     return this.usersService.getUsers();
   }
 
+  @Get()
+  @getUserDecorator()
+  getUsersPage(@Query("page") page: string = "1", @Query("limit") limit: string = "5") {
+    return this.usersService.getUsersPage(Number(page), Number(limit))
+  }
+
+  @Get("premium/monthly/:id")
+  @ApiExcludeEndpoint()
+  makeUserPremiumMonthly(@Param("id", ParseUUIDPipe) id: UUID, @Query() payment: any) {
+    if (payment.status === "approved") {
+      return this.usersService.makeUserPremiumMonthly(id)
+    } else {throw new BadRequestException("hubo un error con el metodo de pago")}
+  }
+
+  @Get("premium/yearly/:id")
+  @ApiExcludeEndpoint()
+  makeUserPremiumYearly(@Param("id", ParseUUIDPipe) id: UUID, @Query() payment: any) {
+    if (payment.status === "approved") {
+      return this.usersService.makeUserPremiumYearly(id)
+    } else {throw new BadRequestException("hubo un error con el metodo de pago")}
+  }
+
   @Get(':id')
+  @getUserByIdDecoractor()
   getUserById(@Param('id', ParseUUIDPipe) id: UUID) {
     return this.usersService.getUserById(id);
   }
 
+  @Put("password/:id")
+  @changePasswordDecorator()
+  changePassword(@Param("id", ParseUUIDPipe) id: UUID, @Body() changePasswordDto: ChangePasswordDto) {
+    return this.usersService.changePasword(id, changePasswordDto)
+  }
+
   @Put(':id')
+  @updateUserDecorator()
   updateUser(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.updateUser(id, updateUserDto);
   }
 
   @Delete(':id')
+  @deleteUserDecorator()
   deleteUser(@Param('id', ParseUUIDPipe) id: UUID) {
     return this.usersService.deleteUser(id);
   }

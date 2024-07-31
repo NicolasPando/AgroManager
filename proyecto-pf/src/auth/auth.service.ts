@@ -3,7 +3,8 @@ import { CreateUserDto } from "src/users/dto/create-user.dto";
 import { UsersRepository } from "src/users/users.repository";
 import * as bcrypt from "bcrypt"
 import { JwtService } from "@nestjs/jwt";
-
+import { UUID } from "crypto";
+import { SignInDto } from "./dto/signIn.dto";
 
 
 @Injectable()
@@ -23,20 +24,26 @@ export class AuthService {
         return this.UsersRepository.createUser({...createUserDto, password: hashedPassword})
     }
 
-    async signIn(signInDto) {
-        const user = await this.UsersRepository.getUserByEmail(signInDto.email)
-        if(!user) {throw new BadRequestException("las credenciales son incorrectas1")}
-        const confirmPassword: boolean = await bcrypt.compare(signInDto.password, user.password) 
+    async signIn(signInDto: SignInDto) {
+        const userFound = await this.UsersRepository.getUserByEmail(signInDto.email)
+        if(!userFound) {throw new BadRequestException("las credenciales son incorrectas1")}
+        const confirmPassword: boolean = await bcrypt.compare(signInDto.password, userFound.password) 
         if (!confirmPassword) {throw new BadRequestException("credenciales incorrectas")} 
 
         const payload = {
-            sub: user.id,
-            email: user.email,
-            roles: user.roles
+            sub: userFound.id,
+            email: userFound.email,
+            roles: userFound.roles
         }
+
+        const {password, ...user} = userFound
         
         const token = this.JwtService.sign(payload)
 
-        return {message: "login exitoso", token}
+        return { message: 'login exitoso', token, isLoggin: true, user };
+    }
+
+    giveAdmin(id: UUID){
+        return this.UsersRepository.giveAdmin(id)
     }
 }
