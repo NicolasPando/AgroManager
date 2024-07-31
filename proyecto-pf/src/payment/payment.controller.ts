@@ -15,14 +15,14 @@ export class PaymentController {
         try {
             // Define el cuerpo de la solicitud de preaprobación
             const body = {
-                reason: "suscripcion mensual agromanager",
+                reason: "suscripcion diaria agromanager",
                 auto_recurring: {
                     frequency: 1,
                     frequency_type: "days",
-                    transaction_amount: 15,
+                    transaction_amount: 1,
                     currency_id: "ARS",
                     start_date: new Date().toISOString(),
-                    end_date: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString()
+                    end_date: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString() // Ajustar a 1 día
                 },
                 back_url: `https://deppf.onrender.com/users/premium/monthly/${id}`,
                 payer_email: "carinadcundins@gmail.com"
