@@ -82,7 +82,7 @@ export class UsersRepository {
         return {message: "el usuario ha sido actualizado con éxito", updatedUser}
       }
 
-      async givePremiumDaily(userId: UUID) {
+      async givePremiumMonthly(userId: UUID) {
         // Da premium por 1 día, hasta que adaptemos la lógica 
         const premiumRole = await this.roleRepository.findOne({ where: { name: RolesEnum.PREMIUM } });
         const user = await this.userRepository.findOne({ where: { id: userId, active: true }, relations: { roles: true } });
