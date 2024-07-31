@@ -103,6 +103,7 @@ export class UsersRepository {
         user.premiumExpiration = expDate;
       
         await this.userRepository.save(user);
+
       
         return "El usuario ahora es premium por un día";
       }
