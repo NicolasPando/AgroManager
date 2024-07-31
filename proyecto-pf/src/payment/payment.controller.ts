@@ -19,7 +19,7 @@ export class PaymentController {
                 auto_recurring: {
                     frequency: 1,
                     frequency_type: "days",
-                    transaction_amount: 1,
+                    transaction_amount: 15,
                     currency_id: "ARS",
                     start_date: new Date().toISOString(),
                     end_date: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString() // Ajustar a 1 día
