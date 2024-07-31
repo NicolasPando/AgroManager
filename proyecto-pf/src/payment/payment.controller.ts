@@ -20,7 +20,7 @@ export class PaymentController {
                 currency_id: "ARS"
             }],
             back_urls: {
-                success: `http://localhost:3001/users/premium/monthly/${id}`,
+                success: `https://deppf.onrender.com/users/premium/monthly/${id}`,
                 failure: "https://music.youtube.com/watch?v=jtXDIfWjMkQ",
                 pending: "https://www.youtube.com/watch?v=vEXwN9-tKcs",
             },
@@ -43,7 +43,7 @@ export class PaymentController {
                 currency_id: "ARS"
             }],
             back_urls: {
-                success: `http://localhost:3001/users/premium/yearly/${id}`,
+                success: `https://deppf.onrender.com/users/premium/yearly/${id}`,
                 failure: "https://music.youtube.com/watch?v=jtXDIfWjMkQ",
                 pending: "https://www.youtube.com/watch?v=vEXwN9-tKcs",
             },
